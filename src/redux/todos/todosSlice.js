@@ -20,6 +20,12 @@ export const todosSlice = createSlice({
     reducers :{
         addToDo : (state,action) =>{
             state.items.push(action.payload)
+        },
+        toggle : (state,action) =>{
+            const {id} = action.payload;
+
+            const item = state.items.find(item => item.id === id)
+            item.completed = !item.completed
         }
     }
 });
@@ -27,6 +33,6 @@ export const todosSlice = createSlice({
 /* Global Stateimizin items kısmına push metodu ile dizinin sonuna yeni değerler eklemek için kullanılır. İşlem sonucunda ise, dizinin yeni uzunluğunu geriye döner. */ 
 /* Action. payload kısmı ise componentsde duran input formundan gelecektir. */
 
-export const {addToDo} = todosSlice.actions;
+export const {addToDo, toggle} = todosSlice.actions;
 
 export default todosSlice.reducer;
