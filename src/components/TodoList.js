@@ -3,9 +3,11 @@ import {useSelector, useDispatch} from 'react-redux';
 import {toggle} from '../redux/todos/todosSlice'
 import {destroy} from '../redux/todos/todosSlice'
 
+let filtered;
 
 function TodoList() {
     const items = useSelector(state=> state.todos.items)
+    const activeFilter = useSelector(state=> state.todos.activeFilter)
     const dispatch = useDispatch();
 
     const handleDestroy = (id)=>
@@ -17,19 +19,20 @@ function TodoList() {
         
     }
 
+    filtered = items;
+    if(activeFilter !== 'all')
+    {
+        filtered = items.filter((todo)=> activeFilter === 'active' 
+        ? todo.completed === false
+        : todo.completed === true
+        )
+    }
+
     return (
         <ul className="todo-list">
-        {/* <li className="completed">
-            <div className="view">
-                <input className="toggle" type="checkbox" />
-                <label>Learn JavaScript</label>
-                <button className="destroy"></button>
-            </div>
-        </li> */}
-      
         <li>
             {
-                items.map((item)=>(
+                filtered.map((item)=>(
                     <li key={item.id} className={item.completed ? 'completed' : ''}> {/* Bu classname ise eğer compeleted'teki veri true ise completed classını çalıştır değilse bir şey yapma dedik.*/}
                     
                     <div className="view">

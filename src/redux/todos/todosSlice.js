@@ -15,7 +15,8 @@ export const todosSlice = createSlice({
                 title : 'Learn React Native',
                 completed : true,
             }
-        ]
+        ],
+        activeFilter : 'all',
     },
     reducers :{
         addToDo : (state,action) =>{
@@ -31,13 +32,22 @@ export const todosSlice = createSlice({
             const id = action.payload;
             const filtered = state.items.filter((item)=> item.id !== id)
             state.items = filtered;
+        },
+        changeActiveFilter : (state,action) =>{
+            state.activeFilter = action.payload;
+        },
+        clearCompleted : (state) =>{
+            const filtered = state.items.filter(item => item.completed === false)
+            state.items = filtered
         }
+
+
     }
 });
 
 /* Global Stateimizin items kısmına push metodu ile dizinin sonuna yeni değerler eklemek için kullanılır. İşlem sonucunda ise, dizinin yeni uzunluğunu geriye döner. */ 
 /* Action. payload kısmı ise componentsde duran input formundan gelecektir. */
 
-export const {addToDo, toggle, destroy} = todosSlice.actions;
+export const {addToDo, toggle, destroy, changeActiveFilter,clearCompleted} = todosSlice.actions;
 
 export default todosSlice.reducer;
