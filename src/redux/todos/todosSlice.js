@@ -48,6 +48,16 @@ export const todosSlice = createSlice({
 /* Global Stateimizin items kısmına push metodu ile dizinin sonuna yeni değerler eklemek için kullanılır. İşlem sonucunda ise, dizinin yeni uzunluğunu geriye döner. */ 
 /* Action. payload kısmı ise componentsde duran input formundan gelecektir. */
 
-export const {addToDo, toggle, destroy, changeActiveFilter,clearCompleted} = todosSlice.actions;
+export const selectTodos = (state) => state.todos.items;
+
+export const selectFilteredTodos = (state) => {
+    if (state.todos.activeFilter === 'all') {
+        return state.todos.items;
+    } // eğer todos all ise bütün global stateyi dön.
+    return state.todos.items.filter((todo) =>
+    state.todos.activeFilter === 'active' ? todo.completed === false : todo.completed === true)
+};
+
+export const {addToDo, toggle, destroy, changeActiveFilter, clearCompleted} = todosSlice.actions;
 
 export default todosSlice.reducer;
