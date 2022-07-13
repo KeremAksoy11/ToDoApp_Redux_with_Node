@@ -1,6 +1,6 @@
 import {useState} from 'react';
 import { useDispatch} from 'react-redux'
-import { nanoid } from 'nanoid'
+
 import { addToDo } from '../redux/todos/todosSlice';
 
 
@@ -13,7 +13,7 @@ function Header() {
 	const handleSubmit = (e) =>{ // bir istek gönderdiğimizde sayfayı yönlendirmemek için kullanıyoruz. Handlesubmit'in amacı budur.
 	if (!title) return; // eğer title içi boşşa direkt dön dedik ve veri girişini engelledik.
 	e.preventDefault();
-	dispatch(addToDo({id:  nanoid() , title, completed : false}))
+	dispatch(addToDo({ title}))
 	setTitle('');
 	}
 

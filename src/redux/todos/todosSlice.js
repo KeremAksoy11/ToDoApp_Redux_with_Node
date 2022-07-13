@@ -1,4 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit'
+import { nanoid } from 'nanoid'
 
 
 export const todosSlice = createSlice({
@@ -19,8 +20,20 @@ export const todosSlice = createSlice({
         activeFilter : 'all',
     },
     reducers :{
-        addToDo : (state,action) =>{
+        addToDo : {
+        reducer :(state,action) =>{
             state.items.push(action.payload)
+        },
+        prepare : ({title}) => { // Sürekli aynı verileri statik olarak yazacaksak ve reducerı çok yerde kullanacaksak, koddan kar etmek için reducer'a gelen action.payloadını burada manipüle ederek kısa kod satırlarıyla bitirebiliriz işi.
+            return {
+                payload : {
+                    id : nanoid(),
+                    completed : false,
+                    title,
+                }
+            }
+        }
+
         },
         toggle : (state,action) =>{
             const {id} = action.payload;
