@@ -1,15 +1,24 @@
-import React from 'react';
+import {useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {toggle} from '../redux/todos/todosSlice'
 import {destroy} from '../redux/todos/todosSlice'
 import { selectFilteredTodos} from '../redux/todos/todosSlice'
-
+import { getTodosAsync} from '../redux/todos/todosSlice'
+import Loading from './Loading';
+import Error from './Error';
 
 
 function TodoList() {
    
     const dispatch = useDispatch();
     const filteredTodos = useSelector(selectFilteredTodos);
+    const İsLoading = useSelector(state => state.todos.İsLoading);
+    const error = useSelector(state => state.todos.error);
+
+    useEffect(()  => {
+        dispatch(getTodosAsync())
+    }, [dispatch]);
+
     const handleDestroy = (id)=>
     {
         if(window.confirm('Are you sure you want to delete?'))
@@ -17,6 +26,18 @@ function TodoList() {
         dispatch(destroy(id))
         }
         
+    }
+
+    if (İsLoading)
+    {
+        
+        return <Loading/>
+       
+    }
+
+    if (error)
+    {
+        return <Error message={error}/>
     }
 
 
