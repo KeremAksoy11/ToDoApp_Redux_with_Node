@@ -1,6 +1,6 @@
 import {useState} from 'react';
 import { useDispatch} from 'react-redux'
-import { addToDoAsync } from '../redux/todos/todosSlice';
+import { addToDoAsync } from '../redux/todos/services'
 import { useSelector } from 'react-redux';
 
 function Header() {
@@ -12,9 +12,7 @@ function Header() {
 	const Error = useSelector((state)=> state.todos.addNewTodoError);
 
 	const handleSubmit = async (e) =>{ 
-	// bir istek gönderdiğimizde sayfayı yönlendirmemek için kullanıyoruz. Handlesubmit'in amacı budur.
 	if (!title) return; 
-	// eğer title içi boşşa direkt dön dedik ve veri girişini engelledik.
 	e.preventDefault();
 	await dispatch(addToDoAsync({ title}))
 	setTitle('');

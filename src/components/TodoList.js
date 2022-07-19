@@ -1,12 +1,11 @@
 import {useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
-import {toggle} from '../redux/todos/todosSlice'
-import {destroy} from '../redux/todos/todosSlice'
 import { selectFilteredTodos} from '../redux/todos/todosSlice'
-import { getTodosAsync} from '../redux/todos/todosSlice'
+import { getTodosAsync} from '../redux/todos/services'
 import Loading from './Loading';
 import Error from './Error';
-
+import { toggleToDoAsync} from '../redux/todos/services'
+import { removeItemAsync} from '../redux/todos/services'
 
 function TodoList() {
    
@@ -14,16 +13,19 @@ function TodoList() {
     const filteredTodos = useSelector(selectFilteredTodos);
     const İsLoading = useSelector(state => state.todos.İsLoading);
     const error = useSelector(state => state.todos.error);
+    const handleToggle = async (id, completed) => {
+        await dispatch(toggleToDoAsync({id , data : {completed}}))
+    }
 
     useEffect(()  => {
         dispatch(getTodosAsync())
     }, [dispatch]);
 
-    const handleDestroy = (id)=>
+    const handleDestroy = async (id)=>
     {
         if(window.confirm('Are you sure you want to delete?'))
         {
-        dispatch(destroy(id))
+         await dispatch(removeItemAsync(id));
         }
         
     }
@@ -52,7 +54,7 @@ function TodoList() {
                         <input className="toggle" 
                         type="checkbox"
                         checked={item.completed} 
-                        onChange={() =>dispatch(toggle({id :item.id}))}/>
+                        onChange={() => handleToggle(item.id, !item.completed)}/>
                         <label>{item.title}</label>
                         <button className="destroy" onClick={()=>handleDestroy(item.id)}></button>
                     </div>
