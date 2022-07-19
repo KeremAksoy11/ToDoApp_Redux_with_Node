@@ -1,7 +1,9 @@
-import React from 'react';
+import {useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux'
-import {changeActiveFilter,clearCompleted} from '../redux/todos/todosSlice'
+import {changeActiveFilter} from '../redux/todos/todosSlice'
 import {selectTodos} from '../redux/todos/todosSlice'
+import { compeletedItemAsync} from '../redux/todos/services'
+import { getTodosAsync} from '../redux/todos/services'
 
 
 function Footer() {
@@ -10,7 +12,15 @@ function Footer() {
 	const activeFilter = useSelector((state)=>	state.todos.activeFilter);
 	const itemsLeft = items.filter(item=>!item.completed).length;
 	const dispatch = useDispatch();
+	
+	
+	const compeletedItem = async (id,completed) => {
+		await dispatch(compeletedItemAsync({id,data : {completed}}))
+	}
 
+	useEffect(()  => {
+        dispatch(getTodosAsync())
+    }, [dispatch]);
 	
 	console.log(items)
     return ( <div>
@@ -41,7 +51,7 @@ function Footer() {
 			</li>
 		</ul>
 
-		<button className="clear-completed" onClick={()=> dispatch(clearCompleted())}>
+		<button className="clear-completed" onClick={() => compeletedItem(items.id)}>
 			Clear completed
 		</button>
 	</footer>

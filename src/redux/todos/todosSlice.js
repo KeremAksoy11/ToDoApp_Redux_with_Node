@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { getTodosAsync, addToDoAsync, removeItemAsync , toggleToDoAsync } from './services';
+import { getTodosAsync, addToDoAsync, removeItemAsync , toggleToDoAsync, compeletedItemAsync} from './services';
 
 export const todosSlice = createSlice({
     name: 'todos',
@@ -27,10 +27,10 @@ export const todosSlice = createSlice({
         changeActiveFilter: (state, action) => {
             state.activeFilter = action.payload;
         },
-        clearCompleted: (state) => {
+       /*  clearCompleted: (state) => {
             const filtered = state.items.filter(item => item.completed === false)
             state.items = filtered
-        }
+        } */
         // add todo
 
 
@@ -71,6 +71,12 @@ export const todosSlice = createSlice({
             const id = action.payload;
             const filtered = state.items.filter((item) => item.id !== id)
             state.items = filtered;
+        },
+        // Clear Completed 
+        // Verileri siliyor ama sayfaya refresh yapıldığı vakit tekrardan eski verilerle birlikte geliyor.
+        [compeletedItemAsync.fulfilled] : (state, action) => {     
+            const filtered = state.items.filter((item) => item.completed === false)
+            state.items = filtered
         }
     
         
